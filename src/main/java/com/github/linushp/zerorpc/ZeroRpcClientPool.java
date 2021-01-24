@@ -33,9 +33,9 @@ public class ZeroRpcClientPool {
     /**
      * 创建一个Client
      *
-     * @param serviceName
-     * @param address
-     * @param clientCount
+     * @param serviceName 服务名
+     * @param address 服务地址，如：tcp://localhost:5555
+     * @param clientCount 每个address创建多少个client连接
      */
     public static void createClient(String serviceName, String address, int clientCount) {
         Map<String, List<ZeroRpcClient>> serviceMap = getClientMapByServiceName(serviceName);
@@ -95,7 +95,7 @@ public class ZeroRpcClientPool {
      * 然后再使用round robin找到其中一个Client
      *
      * @param serviceName 服务名
-     * @return
+     * @return 获取RPCClient对象
      */
     public static ZeroRpcClient getClient(String serviceName) {
         return getClient(serviceName, "" + Math.random());

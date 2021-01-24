@@ -67,7 +67,7 @@ public class ConsistentHashRouter<T extends ConsistentHashNode> {
     /**
      * remove the physical node from the hash ring
      *
-     * @param pNode
+     * @param pNode 一致性hash节点
      */
     public void removeNode(T pNode) {
         Iterator<Long> it = ring.keySet().iterator();
@@ -84,7 +84,7 @@ public class ConsistentHashRouter<T extends ConsistentHashNode> {
      * with a specified key, route the nearest Node instance in the current hash ring
      *
      * @param objectKey the object key to find a nearest Node
-     * @return
+     * @return 一致性hash节点
      */
     public T routeNode(String objectKey) {
         if (ring.isEmpty()) {
