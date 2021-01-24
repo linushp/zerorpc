@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 客户端连接池
  * 单线程发送消息到服务端
  * 多线程发送消息到此客户端
  * 一个Service可以是一个集群，所以一个ServiceName会有多个Address
