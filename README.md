@@ -1,0 +1,2 @@
+# zerorpc
+基于zeromq和一致性hash算法负载均衡的高性能rpc框架
