@@ -5,10 +5,7 @@ import com.github.linushp.zerorpc.consistenthash.ConsistentHashRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -35,7 +32,7 @@ public class ZeroRpcClientPool {
      * 创建一个Client
      *
      * @param serviceName 服务名
-     * @param address 服务地址，如：tcp://localhost:5555
+     * @param address     服务地址，如：tcp://localhost:5555
      * @param clientCount 每个address创建多少个client连接
      */
     public static void createClient(String serviceName, String address, int clientCount) {
@@ -110,13 +107,13 @@ public class ZeroRpcClientPool {
      * @param objectKey   用来做一致性hash的对象key
      * @return ZeroRpcClient实例
      */
-    public static ZeroRpcClient getClient(String serviceName, String objectKey) {
+    public static ZeroRpcClient getClient(String serviceName, Object objectKey) {
         ConsistentHashRouter<ConsistentHashNode> consistentHashRouter = consistentHashRouterMap.get(serviceName);
         if (consistentHashRouter == null) {
             LOG.error("consistentHashRouter is null of " + serviceName);
             return null;
         }
-        ConsistentHashNode routeNode = consistentHashRouter.routeNode(objectKey);
+        ConsistentHashNode routeNode = consistentHashRouter.routeNode(objectKey.toString());
         if (routeNode == null) {
             LOG.error("routeNode is null of " + serviceName + " , " + objectKey);
             return null;
@@ -124,6 +121,38 @@ public class ZeroRpcClientPool {
 
         String address = routeNode.getKey();
         return getClientByAddress(serviceName, address);
+    }
+
+
+    /**
+     * 工具函数：
+     * 使用一致性hash算法 将Object keys 分组
+     * 方便批量处理大量数据，分组后可以批量发送
+     *
+     * @param serviceName   服务名
+     * @param objectKeyList 用来做一致性hash的对象key
+     * @return 返回的map的结构是这样的 <address,List<ObjectKey>>
+     */
+    public static Map<String, List<Object>> groupAddressOfKeys(String serviceName, List<?> objectKeyList) {
+        ConsistentHashRouter<ConsistentHashNode> consistentHashRouter = consistentHashRouterMap.get(serviceName);
+        if (consistentHashRouter == null) {
+            LOG.error("consistentHashRouter is null of " + serviceName);
+            return new HashMap<>();
+        }
+
+        Map<String, List<Object>> map = new HashMap<>();
+
+        for (Object key : objectKeyList) {
+            String keyString = key.toString();
+            ConsistentHashNode routeNode = consistentHashRouter.routeNode(keyString);
+            if (routeNode != null) {
+                String address = routeNode.getKey();
+                List<Object> keyArr = map.computeIfAbsent(address, k -> new ArrayList<>());
+                keyArr.add(key);
+            }
+        }
+
+        return map;
     }
 
 
