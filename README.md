@@ -68,6 +68,7 @@ class ClientDemo {
         String address5 = "tcp://localhost:5555";
         String address6 = "tcp://localhost:6666";
         
+        //注意：客户端数量越多反而会导致并发能力越弱
         ZeroRpcClientPool.createClient("TestService", address5, 10);
         ZeroRpcClientPool.createClient("TestService", address6, 10);
 
@@ -88,3 +89,9 @@ class ClientDemo {
 
 
 ```
+
+### 性能测试
+
+服务器配置：i5 双核 8G
+单台服务器：支持每秒十万级并发
+
