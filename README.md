@@ -1,6 +1,10 @@
 # zerorpc
 基于zeromq和一致性hash算法负载均衡的高性能rpc框架
 
+### zeromq介绍
+
+https://zeromq.org/
+
 ### 特点
 1. 可靠性：内部实现基于ZeroMQ的req/rep机制，每一个消息体都会有重试和确认机制
 2. Server端和Client端的启动顺序没有要求，连接建立之前会将消息暂存在发送缓冲区。不会丢失消息
