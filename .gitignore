@@ -26,3 +26,4 @@ src/.DS_Store
 .DS_Store
 zerorpc.iml
 *.iml
+target/
