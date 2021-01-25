@@ -20,13 +20,13 @@ public class ZeroRpcClientPool {
     private static final Logger LOG = LoggerFactory.getLogger(ZeroRpcClientPool.class);
 
     //<ServiceName,<Address,List<Client>>>
-    private static Map<String, Map<String, List<ZeroRpcClient>>> allClients = new ConcurrentHashMap<>();
+    private static final Map<String, Map<String, List<ZeroRpcClient>>> allClients = new ConcurrentHashMap<>();
 
     //<ServiceName,<Address,Index>>
-    private static Map<String, Map<String, Integer>> lastClientIndexes = new ConcurrentHashMap<>();
+    private static final Map<String, Map<String, Integer>> lastClientIndexes = new ConcurrentHashMap<>();
 
     //<ServiceName,ConsistentHashRouter>
-    private static Map<String, ConsistentHashRouter<ConsistentHashNode>> consistentHashRouterMap = new ConcurrentHashMap<>();
+    private static final Map<String, ConsistentHashRouter<ConsistentHashNode>> consistentHashRouterMap = new ConcurrentHashMap<>();
 
     /**
      * 创建一个Client
