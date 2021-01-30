@@ -41,11 +41,13 @@ public class ZeroRpcServer implements Runnable {
 
     private void createSocket(ZContext context) {
         if (socket != null) {
+            LOG.info("ZeroRpcServer close " + this.address);
             socket.close();
         }
         socket = context.createSocket(SocketType.REP);
         socket.setSendTimeOut(ZeroRpcConst.SERVER_SEND_TIME_OUT);
         socket.bind(this.address);
+        LOG.info("ZeroRpcServer bind " + this.address);
     }
 
     @Override
