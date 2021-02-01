@@ -176,4 +176,15 @@ public class ZeroRpcClientPool {
         serviceClientIndexes.put(address, index);
         return client;
     }
+
+
+    /**
+     * 获取某个服务所有的地址
+     * @param serviceName 服务名
+     * @return 地址列表
+     */
+    public static List<String> getAllAddressListByServiceName(String serviceName){
+        Map<String, List<ZeroRpcClient>> clients = allClients.get(serviceName);
+        return new ArrayList<>(clients.keySet());
+    }
 }
