@@ -30,10 +30,15 @@ public class ZeroRpcClient implements Runnable {
 
     public void sendMessage(byte[] message) {
         this.sending.add(message);
+
+        int sendingSize = this.sending.size();
+        if (sendingSize > 10000) {
+            LOG.warn("sending queue is over 10000 , now size is " + sendingSize + " , serviceName = " + this.serviceName);
+        }
     }
 
     private ZMQ.Socket connect(ZContext context) {
-        LOG.info("connecting to " + this.address);
+        LOG.info("connecting to " + this.address + " , serviceName is " + this.serviceName);
         ZMQ.Socket socket = context.createSocket(SocketType.REQ);
         socket.connect(this.address);
         socket.setReceiveTimeOut(ZeroRpcConst.CLIENT_RECEIVE_TIME_OUT);

@@ -133,7 +133,7 @@ public class ZeroRpcClientPool {
      * @param objectKeyList 用来做一致性hash的对象key
      * @return 返回的map的结构是这样的 <address,List<ObjectKey>>
      */
-    public static <T> Map<String, List<T>>  groupAddressOfKeys(String serviceName, List<T> objectKeyList) {
+    public static <T> Map<String, List<T>> groupAddressOfKeys(String serviceName, List<T> objectKeyList) {
         ConsistentHashRouter<ConsistentHashNode> consistentHashRouter = consistentHashRouterMap.get(serviceName);
         if (consistentHashRouter == null) {
             LOG.error("consistentHashRouter is null of " + serviceName);
@@ -180,11 +180,16 @@ public class ZeroRpcClientPool {
 
     /**
      * 获取某个服务所有的地址
+     *
      * @param serviceName 服务名
      * @return 地址列表
      */
-    public static List<String> getAllAddressListByServiceName(String serviceName){
+    public static List<String> getAllAddressListByServiceName(String serviceName) {
         Map<String, List<ZeroRpcClient>> clients = allClients.get(serviceName);
+        if (clients == null) {
+            LOG.error("serviceClients is null of " + serviceName);
+            return new ArrayList<>();
+        }
         return new ArrayList<>(clients.keySet());
     }
 }
